@@ -1,0 +1,37 @@
+name: Set Demo Start Time
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  set-demo-start:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set demo start time once
+        shell: bash
+        run: |
+          if grep -q "'AUTO'" app/demo-start.ts; then
+            NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+            echo "export const demoStartedAt = '$NOW';" > app/demo-start.ts
+            echo "CHANGED=true" >> $GITHUB_ENV
+          else
+            echo "CHANGED=false" >> $GITHUB_ENV
+          fi
+
+      - name: Save start time
+        if: env.CHANGED == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/demo-start.ts
+          git commit -m "Set demo 7-day start time"
+          git push

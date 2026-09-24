@@ -1,0 +1,7 @@
+VERCEL-READY COPY
+
+The website design, text, images, video, animations and business content are unchanged.
+Only deployment configuration was adjusted so Vercel uses the native Next.js build instead of the original Vinext/Cloudflare build.
+
+Upload this complete folder to GitHub, import the repository into Vercel, and deploy.
+The included vercel.json supplies the framework, install command and build command.
